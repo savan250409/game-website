@@ -198,12 +198,11 @@ export default function Hero({ apps, live }: { apps: StoreApp[]; live: boolean }
                 return (
                   <motion.div
                     key={app.id}
-                    className="absolute inset-0 overflow-hidden rounded-[28px] border-4 border-paper shadow-lift"
-                    style={{ background: `linear-gradient(140deg, ${app.accent}26, ${app.accent}0d 60%, #ffffff)` }}
+                    className="absolute inset-x-0 top-0 overflow-hidden rounded-[26px] border-4 border-paper bg-paper shadow-lift"
                     initial={{ opacity: 0, y: 60, scale: 0.85, rotate: 0 }}
                     animate={{
                       opacity: 1,
-                      y: pos * -26,
+                      y: pos * -24,
                       x: pos * 18,
                       scale: 1 - pos * 0.07,
                       rotate: pos === 0 ? -4 : pos * 5,
@@ -212,30 +211,32 @@ export default function Hero({ apps, live }: { apps: StoreApp[]; live: boolean }
                     exit={{ x: -380, y: 40, rotate: -28, opacity: 0, transition: { duration: 0.6, ease: EASE } }}
                     transition={{ type: "spring", stiffness: 160, damping: 20, delay: 0.3 }}
                   >
-                    {/* Full banner, never cropped — only the top card loads eagerly */}
-                    <Image
-                      src={playImg(app.banner, "w1024-h500")}
-                      alt={app.name}
-                      fill
-                      priority={i === 0}
-                      loading={i === 0 ? undefined : "lazy"}
-                      quality={70}
-                      sizes="(max-width: 768px) 90vw, 520px"
-                      className="object-contain"
-                    />
-                    <div className="absolute inset-x-0 bottom-0 flex items-center gap-3 bg-gradient-to-t from-ink/90 via-ink/60 to-transparent p-4 pt-12">
+                    {/* Banner box shaped like the Play Store graphic — fills edge to edge, no crop */}
+                    <div className="relative aspect-[1024/500] w-full">
+                      <Image
+                        src={playImg(app.banner, "w1024-h500")}
+                        alt={app.name}
+                        fill
+                        priority={i === 0}
+                        loading={i === 0 ? undefined : "lazy"}
+                        quality={72}
+                        sizes="(max-width: 768px) 90vw, 520px"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="flex items-center gap-3 p-3">
                       <Image
                         src={playImg(app.icon, "s128")}
                         alt=""
-                        width={44}
-                        height={44}
-                        className="rounded-xl ring-2 ring-white/70"
+                        width={40}
+                        height={40}
+                        className="rounded-xl shadow-soft ring-1 ring-line"
                       />
-                      <div className="min-w-0 text-white">
-                        <p className="truncate font-display text-lg leading-tight font-bold">
+                      <div className="min-w-0 text-ink">
+                        <p className="truncate font-display text-base leading-tight font-bold">
                           {app.name.split(":")[0]}
                         </p>
-                        <p className="text-xs font-medium opacity-80">{app.genre}</p>
+                        <p className="text-xs font-semibold text-muted">{app.genre}</p>
                       </div>
                     </div>
                   </motion.div>

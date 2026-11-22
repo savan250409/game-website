@@ -6,10 +6,8 @@ import GamesGrid from "@/components/GamesGrid";
 import Studio, { StudioIntro } from "@/components/Studio";
 import Process from "@/components/Process";
 import CallToAction from "@/components/CallToAction";
+import ContactForm from "@/components/ContactForm";
 import { SectionHeading } from "@/components/Reveal";
-
-// Re-check Google Play every 6 hours so new games appear automatically.
-export const revalidate = 21600;
 
 export default async function Home() {
   const { apps, source } = await getCatalog();
@@ -25,7 +23,7 @@ export default async function Home() {
             eyebrow="Featured games"
             title="Small games."
             accent="Serious fun."
-            intro="Scroll through our latest releases — each one built around a single, satisfying idea."
+            intro="Swipe through our latest releases — each one built around a single, satisfying idea."
           />
         </div>
         <Showcase apps={apps} />
@@ -67,6 +65,9 @@ export default async function Home() {
       <section id="contact" className="scroll-mt-24 pt-32">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <CallToAction apps={apps} />
+          <div className="pt-16 sm:pt-20">
+            <ContactForm />
+          </div>
         </div>
       </section>
     </>

@@ -6,6 +6,7 @@ import Providers from "@/components/Providers";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
+import BackToTop from "@/components/BackToTop";
 import Intro from "@/components/Intro";
 
 const bricolage = Bricolage_Grotesque({
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Header />
           <main className="overflow-x-clip">{children}</main>
           <Footer />
+          <BackToTop />
         </Providers>
       </body>
     </html>

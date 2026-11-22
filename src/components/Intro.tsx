@@ -30,18 +30,14 @@ export default function Intro() {
           initial={{ clipPath: "inset(0 0 0% 0)" }}
           transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
         >
-          <div className="flex flex-col items-center gap-5">
-            <LogoMark size={88} animate />
-            <div className="overflow-hidden">
-              <motion.p
-                initial={{ y: "110%" }}
-                animate={{ y: 0 }}
-                transition={{ delay: 0.6, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="font-display text-3xl font-extrabold tracking-tight"
-              >
-                NG Studio<span className="text-coral">.</span>
-              </motion.p>
-            </div>
+          <div className="flex flex-col items-center gap-6">
+            <motion.div
+              initial={{ scale: 0.6, opacity: 0, rotate: -8 }}
+              animate={{ scale: 1, opacity: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 220, damping: 16 }}
+            >
+              <LogoMark size={160} className="drop-shadow-xl" />
+            </motion.div>
             <motion.div
               className="h-1 w-40 origin-left rounded-full bg-gradient-to-r from-coral via-sun to-mint"
               initial={{ scaleX: 0 }}

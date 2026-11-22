@@ -9,6 +9,11 @@ export const SITE = {
   developerUrl: "https://play.google.com/store/apps/developer?id=NGD+Technolab",
   /** Put your public support email here to show it in the footer / contact section. */
   email: "",
+  /** Contact form submissions are emailed here (via Formsubmit.co). */
+  contactEmail: "savan@ngendevtech.com",
+  /** Phone shown in the footer. */
+  phone: "+91 98257 11336",
+  phoneHref: "+919825711336",
   /** Play Store package ids that should never be shown on the website. */
   hiddenApps: [
     "com.aiphotoeditor.aivideogenerator.collagemaker.photoframe", // AI Collage Maker & Photo Frame

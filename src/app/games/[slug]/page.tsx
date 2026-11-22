@@ -4,8 +4,8 @@ import { getCatalog } from "@/lib/playstore";
 import { playImg } from "@/lib/img";
 import GameDetail from "@/components/GameDetail";
 
-export const revalidate = 21600;
-export const dynamicParams = true;
+// Static export: every game page is generated at build time.
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const { apps } = await getCatalog();

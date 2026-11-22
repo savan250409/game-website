@@ -1,0 +1,9 @@
+{
+  "hosting": {
+    "site": "ng-studio-games",
+    "public": "out",
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+  }
+}

@@ -12,7 +12,7 @@ export default function Footer() {
     <footer className="relative mt-24 overflow-hidden border-t border-line bg-paper">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <Logo />
+          <Logo className="h-20 w-20 sm:h-24 sm:w-24" />
           <p className="mt-4 max-w-sm text-ink-soft">{SITE.description}</p>
         </div>
         <div>
@@ -31,9 +31,15 @@ export default function Footer() {
                 Google Play developer page
               </a>
             </li>
+            <li>
+              <a href={`tel:${SITE.phoneHref}`} className="hover:text-coral">{SITE.phone}</a>
+            </li>
+            <li>
+              <Link href="/#contact" className="hover:text-coral">Contact us</Link>
+            </li>
             {SITE.email && (
               <li>
-                <a  href={`mailto:${SITE.email}`}>{SITE.email}</a>
+                <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
               </li>
             )}
           </ul>
