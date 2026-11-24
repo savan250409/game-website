@@ -31,9 +31,12 @@ jobs:
         run: npm run build
 
       - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          projectId: playstore-admin-f2f25
-          channelId: live
+        env:
+          FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebase-key.json
+        run: |
+          printf '%s' "$FIREBASE_SA" > "$GOOGLE_APPLICATION_CREDENTIALS"
+          npx --yes firebase-tools@13 deploy \
+            --only hosting:ng-studio-games \
+            --project playstore-admin-f2f25 \
+            --non-interactive
