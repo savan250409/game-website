@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowUp } from "lucide-react";
 import Logo from "./Logo";
 import { SITE } from "@/lib/site";
 
@@ -62,15 +61,6 @@ export default function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-line px-5 py-6 text-sm text-muted sm:flex-row sm:px-8">
         <p>© {year} {SITE.name}. All rights reserved.</p>
         <p className="text-xs">Google Play and the Google Play logo are trademarks of Google LLC.</p>
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="group flex items-center gap-2 font-semibold text-ink"
-        >
-          Back to top
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-sun">
-            <ArrowUp size={16} />
-          </span>
-        </button>
       </div>
     </footer>
   );

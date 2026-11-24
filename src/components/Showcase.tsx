@@ -9,7 +9,7 @@ import type { StoreApp } from "@/lib/types";
 import { playImg } from "@/lib/img";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const AUTO_MS = 5000;
+const AUTO_MS = 3000;
 
 /** Featured games as an auto-playing horizontal slider (right → left) with arrows + dots. */
 export default function Showcase({ apps }: { apps: StoreApp[] }) {

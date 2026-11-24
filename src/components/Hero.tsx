@@ -33,7 +33,7 @@ function Word({ children, delay, className = "" }: { children: React.ReactNode; 
   );
 }
 
-export default function Hero({ apps, live }: { apps: StoreApp[]; live: boolean }) {
+export default function Hero({ apps }: { apps: StoreApp[]; live?: boolean }) {
   const games = apps.filter((a) => a.kind === "game");
   const deck = (games.length ? games : apps).slice(0, 5);
   const [top, setTop] = useState(0);
@@ -75,19 +75,6 @@ export default function Hero({ apps, live }: { apps: StoreApp[]; live: boolean }
       <div className="mx-auto grid max-w-7xl items-center gap-16 px-5 sm:px-8 lg:grid-cols-[1.1fr_1fr] lg:gap-10">
         {/* Copy */}
         <motion.div style={{ y: yText, opacity: fade }}>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: EASE }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-paper/80 px-3 py-1.5 text-xs font-semibold text-ink-soft shadow-soft backdrop-blur"
-          >
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-leaf opacity-70" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-leaf" />
-            </span>
-            {live ? "Live from Google Play" : "On Google Play"} · {games.length} games
-            {apps.length > games.length ? ` & ${apps.length - games.length} apps` : ""}
-          </motion.div>
 
           <h1 className="font-display text-[2.9rem] leading-[0.95] font-extrabold tracking-tight sm:text-7xl lg:text-[5.4rem]">
             <Word delay={0.1}>We</Word> <Word delay={0.16}>make</Word>{" "}

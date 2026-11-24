@@ -50,7 +50,7 @@ function Chip({
   );
 }
 
-export default function Studio() {
+export default function Studio({ gamesLive = 5 }: { gamesLive?: number }) {
   // A clean difficulty ladder: bars grow and shift from mint → sun → coral.
   const bars = Array.from({ length: 14 });
   const grad = (t: number) => {
@@ -137,7 +137,7 @@ export default function Studio() {
           <Gamepad2 />
         </Chip>
         <p className="mt-5 font-display text-5xl leading-none font-extrabold">
-          <Counter to={5} />
+          <Counter to={gamesLive} />
         </p>
         <h3 className="mt-1 font-display text-xl font-extrabold">games live</h3>
         <p className="mt-1 text-sm leading-relaxed text-white/85">

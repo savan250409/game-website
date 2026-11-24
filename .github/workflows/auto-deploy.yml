@@ -1,0 +1,39 @@
+name: Rebuild and deploy to Firebase
+
+# Runs automatically every 6 hours (and can be run by hand from the Actions tab).
+# Each run re-reads Google Play, rebuilds the site, and deploys it — so newly
+# published games appear on the website on their own, with no manual step.
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the site (fetches the latest games from Google Play)
+        run: npm run build
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: playstore-admin-f2f25
+          channelId: live

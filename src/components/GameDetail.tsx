@@ -180,18 +180,11 @@ export default function GameDetail({ app, more }: { app: StoreApp; more: StoreAp
 }
 
 function Screenshots({ app }: { app: StoreApp }) {
-  const track = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
+  const scroller = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState<number | null>(null);
 
-  useEffect(() => {
-    const measure = () => {
-      if (track.current) setWidth(Math.max(0, track.current.scrollWidth - track.current.offsetWidth));
-    };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
+  const scrollByCards = (dir: number) =>
+    scroller.current?.scrollBy({ left: dir * 360, behavior: "smooth" });
 
   useEffect(() => {
     if (open === null) return;
@@ -209,40 +202,47 @@ function Screenshots({ app }: { app: StoreApp }) {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="mb-8 flex items-end justify-between gap-4">
           <h2 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">Screenshots</h2>
-          <p className="hidden text-sm font-semibold text-muted sm:block">Drag to explore · click to enlarge</p>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <p className="hidden text-sm font-semibold text-muted md:block">Scroll or use arrows · click to enlarge</p>
+            <button
+              onClick={() => scrollByCards(-1)}
+              aria-label="Scroll screenshots left"
+              className="grid h-11 w-11 place-items-center rounded-full border border-line bg-paper shadow-soft"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              onClick={() => scrollByCards(1)}
+              aria-label="Scroll screenshots right"
+              className="grid h-11 w-11 place-items-center rounded-full border border-line bg-paper shadow-soft"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
         </div>
-        <div ref={track} className="cursor-grab active:cursor-grabbing">
-          <motion.div
-            drag="x"
-            dragConstraints={{ left: -width, right: 0 }}
-            dragElastic={0.12}
-            className="flex w-max gap-5"
-          >
-            {app.screenshots.map((s, i) => (
-              <motion.button
-                key={`${s}-${i}`}
-                layoutId={`shot-${i}`}
-                onClick={() => setOpen(i)}
-                initial={{ opacity: 0, x: 80 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08, duration: 0.6, ease: EASE }}
-                className="relative h-[300px] shrink-0 overflow-hidden rounded-3xl border-4 border-paper bg-sand shadow-lift sm:h-[420px]"
-                aria-label={`Open screenshot ${i + 1}`}
-              >
-                <Image
-                  src={playImg(s, "h840")}
-                  alt={`${app.name} screenshot ${i + 1}`}
-                  width={0}
-                  height={0}
-                  unoptimized
-                  loading="eager"
-                  draggable={false}
-                  className="pointer-events-none h-full w-auto"
-                />
-              </motion.button>
-            ))}
-          </motion.div>
+        <div
+          ref={scroller}
+          className="no-scrollbar -mx-5 flex snap-x gap-5 overflow-x-auto scroll-smooth px-5 pb-2 sm:mx-0 sm:px-0"
+        >
+          {app.screenshots.map((s, i) => (
+            <button
+              key={`${s}-${i}`}
+              onClick={() => setOpen(i)}
+              className="relative h-[300px] shrink-0 snap-start overflow-hidden rounded-3xl border-4 border-paper bg-sand shadow-lift sm:h-[420px]"
+              aria-label={`Open screenshot ${i + 1}`}
+            >
+              <Image
+                src={playImg(s, "h840")}
+                alt={`${app.name} screenshot ${i + 1}`}
+                width={0}
+                height={0}
+                unoptimized
+                loading="eager"
+                draggable={false}
+                className="pointer-events-none h-full w-auto"
+              />
+            </button>
+          ))}
         </div>
       </div>
 

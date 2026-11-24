@@ -11,6 +11,7 @@ import { SectionHeading } from "@/components/Reveal";
 
 export default async function Home() {
   const { apps, source } = await getCatalog();
+  const gamesCount = apps.filter((a) => a.kind === "game").length;
 
   return (
     <>
@@ -44,7 +45,7 @@ export default async function Home() {
             <SectionHeading eyebrow="The studio" title="Made with care," accent="played with joy." />
             <StudioIntro />
           </div>
-          <Studio />
+          <Studio gamesLive={gamesCount} />
         </div>
       </section>
 
