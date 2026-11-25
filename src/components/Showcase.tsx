@@ -57,7 +57,7 @@ export default function Showcase({ apps }: { apps: StoreApp[] }) {
     >
       <div className="relative">
         {/* Slide viewport */}
-        <div className="relative min-h-[600px] overflow-hidden rounded-[32px] sm:min-h-[760px] lg:min-h-[440px]">
+        <div className="relative min-h-[600px] overflow-hidden rounded-[32px] sm:min-h-[760px] lg:min-h-[480px]">
           <AnimatePresence initial={false} custom={dir} mode="popLayout">
             <motion.div
               key={app.id}
@@ -213,10 +213,10 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
         </div>
       </div>
 
-      {/* Banner */}
+      {/* Banner — fills the full card height on desktop for a taller, bolder image */}
       <div className="flex flex-1 items-center justify-center p-4 sm:p-5">
         <div
-          className="relative mx-auto aspect-[1024/500] w-full max-w-[620px] overflow-hidden rounded-[20px] shadow-xl lg:max-w-none"
+          className="relative mx-auto aspect-[1024/500] w-full max-w-[620px] overflow-hidden rounded-[20px] shadow-xl lg:aspect-auto lg:h-full lg:max-w-none"
           style={{ background: `${app.accent}14` }}
         >
           <Image

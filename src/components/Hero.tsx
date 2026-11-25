@@ -35,7 +35,8 @@ function Word({ children, delay, className = "" }: { children: React.ReactNode; 
 
 export default function Hero({ apps }: { apps: StoreApp[]; live?: boolean }) {
   const games = apps.filter((a) => a.kind === "game");
-  const deck = (games.length ? games : apps).slice(0, 5);
+  // The 5 most recently added games (newest are last on the developer page).
+  const deck = (games.length ? games : apps).slice(-5);
   const [top, setTop] = useState(0);
   const ref = useRef<HTMLElement>(null);
 
@@ -51,14 +52,14 @@ export default function Hero({ apps }: { apps: StoreApp[]; live?: boolean }) {
     return () => clearInterval(t);
   }, [deck.length]);
 
-  const floaters = apps.slice(0, 6);
+  // Only the same five games as the deck — show just their icons floating around it.
+  const floaters = deck;
   const positions = [
-    { left: "-6%", top: "6%", size: 84 },
-    { left: "84%", top: "-4%", size: 72 },
-    { left: "92%", top: "58%", size: 92 },
-    { left: "-2%", top: "72%", size: 68 },
-    { left: "40%", top: "-14%", size: 56 },
-    { left: "52%", top: "96%", size: 64 },
+    { left: "-6%", top: "8%", size: 82 },
+    { left: "85%", top: "-4%", size: 74 },
+    { left: "92%", top: "56%", size: 90 },
+    { left: "-2%", top: "70%", size: 70 },
+    { left: "52%", top: "94%", size: 66 },
   ];
 
   return (
