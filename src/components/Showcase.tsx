@@ -138,7 +138,7 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
     <div className="flex w-full flex-col overflow-hidden rounded-[32px] border border-line bg-paper shadow-lift">
       {/* Top: banner */}
       <div
-        className="relative aspect-[1024/500] w-full shrink-0 overflow-hidden"
+        className="relative h-44 w-full shrink-0 overflow-hidden sm:h-56 lg:h-[320px]"
         style={{ background: `${app.accent}14` }}
       >
         <SafeImage
