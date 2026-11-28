@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import {
   AnimatePresence,
@@ -15,6 +14,7 @@ import { playImg } from "@/lib/img";
 import { SITE } from "@/lib/site";
 import PlayBadge from "./PlayBadge";
 import Counter from "./Counter";
+import SafeImage from "./SafeImage";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -35,8 +35,8 @@ function Word({ children, delay, className = "" }: { children: React.ReactNode; 
 
 export default function Hero({ apps }: { apps: StoreApp[]; live?: boolean }) {
   const games = apps.filter((a) => a.kind === "game");
-  // The 5 most recently added games (newest are last on the developer page).
-  const deck = (games.length ? games : apps).slice(-5);
+  // The catalogue is already sorted newest-first, so the first 5 are the latest games.
+  const deck = (games.length ? games : apps).slice(0, 5);
   const [top, setTop] = useState(0);
   const ref = useRef<HTMLElement>(null);
 
@@ -201,7 +201,7 @@ export default function Hero({ apps }: { apps: StoreApp[]; live?: boolean }) {
                   >
                     {/* Banner box shaped like the Play Store graphic — fills edge to edge, no crop */}
                     <div className="relative aspect-[1024/500] w-full">
-                      <Image
+                      <SafeImage
                         src={playImg(app.banner, "w1024-h500")}
                         alt={app.name}
                         fill
@@ -210,15 +210,31 @@ export default function Hero({ apps }: { apps: StoreApp[]; live?: boolean }) {
                         quality={72}
                         sizes="(max-width: 768px) 90vw, 520px"
                         className="object-cover"
+                        fallback={
+                          <div
+                            className="absolute inset-0 flex items-center justify-center p-4 text-center font-display text-xl font-extrabold text-white"
+                            style={{ background: `linear-gradient(135deg, ${app.accent}, ${app.accent}bb)` }}
+                          >
+                            {app.name.split(":")[0]}
+                          </div>
+                        }
                       />
                     </div>
                     <div className="flex items-center gap-3 p-3">
-                      <Image
+                      <SafeImage
                         src={playImg(app.icon, "s128")}
                         alt=""
                         width={40}
                         height={40}
                         className="rounded-xl shadow-soft ring-1 ring-line"
+                        fallback={
+                          <div
+                            className="grid h-10 w-10 place-items-center rounded-xl font-display font-extrabold text-white ring-1 ring-line"
+                            style={{ background: app.accent }}
+                          >
+                            {app.name[0]}
+                          </div>
+                        }
                       />
                       <div className="min-w-0 text-ink">
                         <p className="truncate font-display text-base leading-tight font-bold">
@@ -278,12 +294,20 @@ function FloatingIcon({
         className="h-full w-full animate-float"
         style={{ animationDelay: `${index * -1.1}s`, animationDuration: `${5 + (index % 3)}s` }}
       >
-        <Image
+        <SafeImage
           src={playImg(app.icon, "s192")}
           alt={app.name}
           width={size}
           height={size}
           className="h-full w-full rounded-[24%] shadow-lift ring-4 ring-paper"
+          fallback={
+            <div
+              className="grid h-full w-full place-items-center rounded-[24%] font-display text-xl font-extrabold text-white shadow-lift ring-4 ring-paper"
+              style={{ background: app.accent }}
+            >
+              {app.name[0]}
+            </div>
+          }
         />
       </div>
     </motion.div>

@@ -53,6 +53,17 @@ function genreOf(category: string) {
 /** Strip the "=w416-h235-rw" style size suffix from a Play image URL. */
 const baseImage = (url: string) => url.replace(/=[a-z0-9-]+$/i, "");
 
+/** Parse the "Updated on" date to a sortable number; unknown dates sort oldest. */
+function updatedTime(app: StoreApp): number {
+  const t = app.updated ? Date.parse(app.updated) : NaN;
+  return Number.isNaN(t) ? 0 : t;
+}
+
+/** Order the catalogue newest-added first (most recently updated game leads). */
+function newestFirst(apps: StoreApp[]): StoreApp[] {
+  return [...apps].sort((a, b) => updatedTime(b) - updatedTime(a));
+}
+
 const decode = (s: string) =>
   s
     .replace(/&amp;/g, "&")
@@ -173,11 +184,11 @@ export async function getCatalog(): Promise<Catalog> {
       app.slug = s;
       used.add(s);
     }
-    return { apps, source: "live", fetchedAt: new Date().toISOString() };
+    return { apps: newestFirst(apps), source: "live", fetchedAt: new Date().toISOString() };
   } catch (err) {
     console.warn("[playstore] using static catalogue:", (err as Error).message);
     return {
-      apps: STATIC_APPS.filter((a) => !SITE.hiddenApps.includes(a.id)),
+      apps: newestFirst(STATIC_APPS.filter((a) => !SITE.hiddenApps.includes(a.id))),
       source: "static",
       fetchedAt: new Date().toISOString(),
     };

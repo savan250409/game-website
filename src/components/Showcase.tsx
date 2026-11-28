@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, ChevronLeft, ChevronRight, Play, Star } from "lucide-react";
 import type { StoreApp } from "@/lib/types";
 import { playImg } from "@/lib/img";
+import SafeImage from "./SafeImage";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const AUTO_MS = 3000;
@@ -14,6 +14,7 @@ const AUTO_MS = 3000;
 /** Featured games as an auto-playing horizontal slider (right → left) with arrows + dots. */
 export default function Showcase({ apps }: { apps: StoreApp[] }) {
   const games = apps.filter((a) => a.kind === "game");
+  // The catalogue arrives newest-first, so the first slide is the latest game.
   const list = games.length ? games : apps;
   const n = list.length;
 
@@ -147,12 +148,20 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
 
         <div className="flex min-h-0 flex-1 flex-col justify-center gap-4 sm:gap-5">
           <div className="flex shrink-0 items-center gap-4">
-            <Image
+            <SafeImage
               src={playImg(app.icon, "s160")}
               alt=""
               width={72}
               height={72}
               className="h-14 w-14 shrink-0 rounded-2xl shadow-lift sm:h-[72px] sm:w-[72px]"
+              fallback={
+                <div
+                  className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl font-display text-2xl font-extrabold text-white shadow-lift sm:h-[72px] sm:w-[72px]"
+                  style={{ background: app.accent }}
+                >
+                  {app.name[0]}
+                </div>
+              }
             />
             <div className="min-w-0">
               <h3 className="font-display text-2xl leading-[1.05] font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
@@ -219,13 +228,21 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
           className="relative mx-auto aspect-[1024/500] w-full max-w-[620px] overflow-hidden rounded-[20px] shadow-xl lg:aspect-auto lg:h-full lg:max-w-none"
           style={{ background: `${app.accent}14` }}
         >
-          <Image
+          <SafeImage
             src={playImg(app.banner, "w1024-h500")}
             alt={app.name}
             fill
             quality={72}
             sizes="(max-width: 768px) 100vw, 640px"
             className="object-cover"
+            fallback={
+              <div
+                className="absolute inset-0 flex items-center justify-center p-5 text-center font-display text-2xl font-extrabold text-white"
+                style={{ background: `linear-gradient(135deg, ${app.accent}, ${app.accent}bb)` }}
+              >
+                {app.name.split(":")[0]}
+              </div>
+            }
           />
         </div>
       </div>

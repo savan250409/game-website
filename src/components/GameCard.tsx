@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowUpRight, Download, Star } from "lucide-react";
 import type { StoreApp } from "@/lib/types";
 import { playImg, showDownloads } from "@/lib/img";
+import SafeImage from "./SafeImage";
 
 export default function GameCard({ app, index = 0 }: { app: StoreApp; index?: number }) {
   return (
@@ -21,7 +21,7 @@ export default function GameCard({ app, index = 0 }: { app: StoreApp; index?: nu
 
         <Link href={`/games/${app.slug}`} className="block" aria-label={`${app.name} details`}>
           <div className="relative aspect-[1024/500] overflow-hidden">
-            <Image
+            <SafeImage
               src={playImg(app.banner, "w640-h312")}
               alt={app.name}
               fill
@@ -29,6 +29,14 @@ export default function GameCard({ app, index = 0 }: { app: StoreApp; index?: nu
               loading="lazy"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
               className="object-cover"
+              fallback={
+                <div
+                  className="absolute inset-0 flex items-center justify-center p-4 text-center font-display text-lg font-extrabold text-white"
+                  style={{ background: `linear-gradient(135deg, ${app.accent}, ${app.accent}bb)` }}
+                >
+                  {app.name.split(":")[0]}
+                </div>
+              }
             />
             <span className="absolute top-3 left-3 rounded-full bg-paper/90 px-3 py-1 text-xs font-bold backdrop-blur">
               {app.genre}
@@ -44,12 +52,20 @@ export default function GameCard({ app, index = 0 }: { app: StoreApp; index?: nu
         <div className="relative p-5 pt-0">
           <div className="-mt-9 flex items-end justify-between">
             <div className="relative">
-              <Image
+              <SafeImage
                 src={playImg(app.icon, "s160")}
                 alt=""
                 width={76}
                 height={76}
                 className="rounded-[22px] shadow-lift ring-4 ring-paper"
+                fallback={
+                  <div
+                    className="grid h-[76px] w-[76px] place-items-center rounded-[22px] font-display text-2xl font-extrabold text-white ring-4 ring-paper"
+                    style={{ background: app.accent }}
+                  >
+                    {app.name[0]}
+                  </div>
+                }
               />
             </div>
             <div className="flex items-center gap-3 pb-1 text-xs font-semibold text-muted">

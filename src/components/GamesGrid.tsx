@@ -19,6 +19,7 @@ export default function GamesGrid({ apps }: { apps: StoreApp[] }) {
 
   const [active, setActive] = useState("all");
 
+  // The catalogue is already sorted newest-first.
   const shown = apps.filter((a) => {
     if (active === "all") return true;
     if (active === "games") return a.kind === "game";
