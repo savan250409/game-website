@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowRight, Check, ChevronLeft, ChevronRight, Play, Star } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Play, Star } from "lucide-react";
 import type { StoreApp } from "@/lib/types";
 import { playImg } from "@/lib/img";
 import SafeImage from "./SafeImage";
@@ -134,11 +134,14 @@ export default function Showcase({ apps }: { apps: StoreApp[] }) {
 }
 
 function Card({ app, index, total }: { app: StoreApp; index: number; total: number }) {
+  const subtitle = app.name.includes(":")
+    ? app.name.split(":").slice(1).join(":").trim()
+    : app.genre;
   return (
-    <div className="flex w-full flex-col overflow-hidden rounded-[32px] border border-line bg-paper shadow-lift">
-      {/* Top: banner */}
+    <div className="flex w-full flex-col overflow-hidden rounded-[32px] border border-line bg-paper shadow-lift lg:flex-row">
+      {/* Left: promo banner */}
       <div
-        className="relative h-[180px] w-full shrink-0 overflow-hidden sm:h-[270px] lg:h-[360px]"
+        className="relative aspect-[1024/500] w-full shrink-0 overflow-hidden lg:aspect-auto lg:w-[56%]"
         style={{ background: `${app.accent}14` }}
       >
         <SafeImage
@@ -147,7 +150,7 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
           fill
           priority={index === 0}
           quality={72}
-          sizes="(max-width: 768px) 100vw, 640px"
+          sizes="(max-width: 1024px) 100vw, 680px"
           className="object-cover"
           fallback={
             <div
@@ -158,71 +161,59 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
             </div>
           }
         />
-        {/* soft top scrim so the overlaid title stays readable */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/35 to-transparent" />
-        {/* game name on the banner — light weight, soft colour */}
-        <h3 className="absolute top-4 right-20 left-5 truncate font-display text-xl font-medium tracking-tight text-white/95 drop-shadow-md sm:text-2xl">
-          {app.name.split(":")[0]}
-        </h3>
         <span className="absolute top-4 right-4 rounded-full bg-ink/60 px-3 py-1 text-xs font-bold text-white backdrop-blur">
           {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
-        {/* white fade — the banner melts into the details below */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-paper via-paper/80 to-transparent" />
       </div>
 
-      {/* Bottom: details (lifted up to sit on the fade) */}
-      <div className="relative z-10 -mt-10 flex flex-col gap-4 p-5 pt-0 sm:p-7 sm:pt-0">
+      {/* Right: details panel */}
+      <div
+        className="flex flex-1 flex-col justify-center gap-4 p-6 sm:p-8 lg:p-9"
+        style={{ background: `linear-gradient(135deg, ${app.accent}12, transparent 70%)` }}
+      >
+        <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-sun px-3 py-1 text-xs font-extrabold tracking-wide text-ink uppercase">
+          <Star size={12} className="fill-ink" /> Featured title
+        </span>
+
         <div className="flex items-center gap-4">
           <SafeImage
             src={playImg(app.icon, "s160")}
             alt=""
             width={64}
             height={64}
-            className="h-14 w-14 shrink-0 rounded-2xl shadow-lift sm:h-16 sm:w-16"
+            className="h-16 w-16 shrink-0 rounded-2xl shadow-lift"
             fallback={
               <div
-                className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl font-display text-2xl font-extrabold text-white shadow-lift sm:h-16 sm:w-16"
+                className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl font-display text-2xl font-extrabold text-white shadow-lift"
                 style={{ background: app.accent }}
               >
                 {app.name[0]}
               </div>
             }
           />
-          <div className="min-w-0 flex-1">
-            <h3 className="font-display text-2xl leading-tight font-semibold tracking-tight text-ink-soft sm:text-3xl">
+          <div className="min-w-0">
+            <h3 className="font-display text-2xl leading-tight font-extrabold tracking-tight sm:text-3xl">
               {app.name.split(":")[0]}
             </h3>
-            <p className="mt-1 flex flex-wrap items-center gap-x-2 text-xs font-bold text-muted">
-              {app.rating ? (
-                <span className="flex items-center gap-1">
-                  <Star size={12} className="fill-sun text-sun" /> {app.rating.toFixed(1)}
-                </span>
-              ) : null}
-              <span>Free</span>
-              <span aria-hidden>·</span>
-              <span>Rated Everyone</span>
+            <p
+              className="mt-0.5 font-display text-base font-bold sm:text-lg"
+              style={{ color: app.accent }}
+            >
+              {subtitle}
             </p>
           </div>
         </div>
 
-        <p className="line-clamp-2 text-sm leading-relaxed text-ink-soft sm:text-base">
+        <p className="line-clamp-3 text-sm leading-relaxed text-ink-soft sm:text-base">
           {app.tagline}
         </p>
 
-        <ul className="hidden flex-wrap gap-2 sm:flex">
-          {app.highlights.slice(0, 4).map((h) => (
+        <ul className="flex flex-wrap gap-2">
+          {app.highlights.slice(0, 3).map((h) => (
             <li
               key={h}
-              className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold"
-              style={{ background: `${app.accent}12`, border: `1px solid ${app.accent}33` }}
+              className="rounded-full border border-line bg-cream px-3 py-1.5 text-xs font-bold text-ink-soft"
             >
-              <span
-                className="grid h-5 w-5 shrink-0 place-items-center rounded-full text-white"
-                style={{ background: app.accent }}
-              >
-                <Check size={12} strokeWidth={3} />
-              </span>
               {h}
             </li>
           ))}
@@ -233,8 +224,8 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
             href={app.storeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white"
-            style={{ background: app.accent }}
+            className="flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white shadow-soft"
+            style={{ background: `linear-gradient(135deg, ${app.accent}, ${app.accent}bb)` }}
           >
             <Play size={15} className="fill-current" /> Play free
           </a>
@@ -242,7 +233,7 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
             href={`/games/${app.slug}`}
             className="flex items-center gap-2 rounded-xl border-2 border-ink px-5 py-3 text-sm font-bold"
           >
-            Details <ArrowRight size={16} />
+            View details <ArrowRight size={16} />
           </Link>
         </div>
       </div>
