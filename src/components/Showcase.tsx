@@ -49,7 +49,7 @@ export default function Showcase({ apps }: { apps: StoreApp[] }) {
 
   return (
     <div
-      className="mx-auto mt-12 max-w-6xl px-5 sm:mt-16 sm:px-8"
+      className="mx-auto mt-12 max-w-2xl px-5 sm:mt-16"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
@@ -58,7 +58,7 @@ export default function Showcase({ apps }: { apps: StoreApp[] }) {
     >
       <div className="relative">
         {/* Slide viewport */}
-        <div className="relative min-h-[600px] overflow-hidden rounded-[32px] sm:min-h-[760px] lg:min-h-[480px]">
+        <div className="relative min-h-[500px] overflow-hidden rounded-[32px] sm:min-h-[700px]">
           <AnimatePresence initial={false} custom={dir} mode="popLayout">
             <motion.div
               key={app.id}
@@ -68,7 +68,7 @@ export default function Showcase({ apps }: { apps: StoreApp[] }) {
               animate="center"
               exit="exit"
               transition={{ duration: 0.55, ease: EASE }}
-              className="absolute inset-0"
+              className="absolute inset-0 flex items-center justify-center"
             >
               <Card app={app} index={index} total={n} />
             </motion.div>
@@ -135,75 +135,98 @@ export default function Showcase({ apps }: { apps: StoreApp[] }) {
 
 function Card({ app, index, total }: { app: StoreApp; index: number; total: number }) {
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden rounded-[32px] border border-line bg-paper shadow-lift lg:flex-row">
-      {/* Text column */}
-      <div className="flex min-h-0 flex-col gap-5 p-5 sm:p-8 lg:w-[44%] lg:p-9">
-        <div className="flex shrink-0 items-center gap-3">
-          <span className="font-display text-sm font-bold" style={{ color: app.accent }}>
-            {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-          </span>
-          <span className="h-px flex-1 bg-line" />
-          <span className="text-xs font-bold text-muted uppercase">{app.genre}</span>
-        </div>
-
-        <div className="flex min-h-0 flex-1 flex-col justify-center gap-4 sm:gap-5">
-          <div className="flex shrink-0 items-center gap-4">
-            <SafeImage
-              src={playImg(app.icon, "s160")}
-              alt=""
-              width={72}
-              height={72}
-              className="h-14 w-14 shrink-0 rounded-2xl shadow-lift sm:h-[72px] sm:w-[72px]"
-              fallback={
-                <div
-                  className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl font-display text-2xl font-extrabold text-white shadow-lift sm:h-[72px] sm:w-[72px]"
-                  style={{ background: app.accent }}
-                >
-                  {app.name[0]}
-                </div>
-              }
-            />
-            <div className="min-w-0">
-              <h3 className="font-display text-2xl leading-[1.05] font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
-                {app.name.split(":")[0]}
-              </h3>
-              <p className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs font-bold text-muted">
-                {app.rating ? (
-                  <span className="flex items-center gap-1">
-                    <Star size={12} className="fill-sun text-sun" /> {app.rating.toFixed(1)}
-                  </span>
-                ) : null}
-                <span>Free</span>
-                <span aria-hidden>·</span>
-                <span>Rated Everyone</span>
-              </p>
+    <div className="flex w-full flex-col overflow-hidden rounded-[32px] border border-line bg-paper shadow-lift">
+      {/* Top: banner */}
+      <div
+        className="relative aspect-[1024/500] w-full shrink-0 overflow-hidden"
+        style={{ background: `${app.accent}14` }}
+      >
+        <SafeImage
+          src={playImg(app.banner, "w1024-h500")}
+          alt={app.name}
+          fill
+          priority={index === 0}
+          quality={72}
+          sizes="(max-width: 768px) 100vw, 640px"
+          className="object-cover"
+          fallback={
+            <div
+              className="absolute inset-0 flex items-center justify-center p-5 text-center font-display text-2xl font-extrabold text-white"
+              style={{ background: `linear-gradient(135deg, ${app.accent}, ${app.accent}bb)` }}
+            >
+              {app.name.split(":")[0]}
             </div>
-          </div>
+          }
+        />
+        <span
+          className="absolute top-4 left-4 rounded-full bg-paper/90 px-3 py-1 text-xs font-bold uppercase backdrop-blur"
+          style={{ color: app.accent }}
+        >
+          {app.genre}
+        </span>
+        <span className="absolute top-4 right-4 rounded-full bg-ink/80 px-3 py-1 text-xs font-bold text-white backdrop-blur">
+          {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </span>
+      </div>
 
-          <p className="line-clamp-3 shrink-0 text-sm leading-relaxed text-ink-soft sm:text-base">
-            {app.tagline}
-          </p>
-
-          <ul className="hidden shrink-0 grid-cols-2 gap-2.5 sm:grid">
-            {app.highlights.slice(0, 4).map((h) => (
-              <li
-                key={h}
-                className="flex items-center gap-2 rounded-2xl px-3 py-2.5 text-xs leading-tight font-bold lg:text-sm"
-                style={{ background: `${app.accent}12`, border: `1px solid ${app.accent}33` }}
+      {/* Bottom: details */}
+      <div className="flex flex-col gap-4 p-5 sm:p-7">
+        <div className="flex items-center gap-4">
+          <SafeImage
+            src={playImg(app.icon, "s160")}
+            alt=""
+            width={64}
+            height={64}
+            className="h-14 w-14 shrink-0 rounded-2xl shadow-lift sm:h-16 sm:w-16"
+            fallback={
+              <div
+                className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl font-display text-2xl font-extrabold text-white shadow-lift sm:h-16 sm:w-16"
+                style={{ background: app.accent }}
               >
-                <span
-                  className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-white"
-                  style={{ background: app.accent }}
-                >
-                  <Check size={14} strokeWidth={3} />
+                {app.name[0]}
+              </div>
+            }
+          />
+          <div className="min-w-0 flex-1">
+            <h3 className="font-display text-2xl leading-tight font-extrabold tracking-tight sm:text-3xl">
+              {app.name.split(":")[0]}
+            </h3>
+            <p className="mt-1 flex flex-wrap items-center gap-x-2 text-xs font-bold text-muted">
+              {app.rating ? (
+                <span className="flex items-center gap-1">
+                  <Star size={12} className="fill-sun text-sun" /> {app.rating.toFixed(1)}
                 </span>
-                {h}
-              </li>
-            ))}
-          </ul>
+              ) : null}
+              <span>Free</span>
+              <span aria-hidden>·</span>
+              <span>Rated Everyone</span>
+            </p>
+          </div>
         </div>
 
-        <div className="flex shrink-0 flex-wrap gap-3">
+        <p className="line-clamp-2 text-sm leading-relaxed text-ink-soft sm:text-base">
+          {app.tagline}
+        </p>
+
+        <ul className="hidden grid-cols-2 gap-2.5 sm:grid">
+          {app.highlights.slice(0, 4).map((h) => (
+            <li
+              key={h}
+              className="flex items-center gap-2 rounded-2xl px-3 py-2.5 text-xs leading-tight font-bold lg:text-sm"
+              style={{ background: `${app.accent}12`, border: `1px solid ${app.accent}33` }}
+            >
+              <span
+                className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-white"
+                style={{ background: app.accent }}
+              >
+                <Check size={14} strokeWidth={3} />
+              </span>
+              {h}
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-1 flex flex-wrap gap-3">
           <a
             href={app.storeUrl}
             target="_blank"
@@ -219,31 +242,6 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
           >
             Details <ArrowRight size={16} />
           </Link>
-        </div>
-      </div>
-
-      {/* Banner — fills the full card height on desktop for a taller, bolder image */}
-      <div className="flex flex-1 items-center justify-center p-4 sm:p-5">
-        <div
-          className="relative mx-auto aspect-[1024/500] w-full max-w-[620px] overflow-hidden rounded-[20px] shadow-xl lg:aspect-auto lg:h-full lg:max-w-none"
-          style={{ background: `${app.accent}14` }}
-        >
-          <SafeImage
-            src={playImg(app.banner, "w1024-h500")}
-            alt={app.name}
-            fill
-            quality={72}
-            sizes="(max-width: 768px) 100vw, 640px"
-            className="object-cover"
-            fallback={
-              <div
-                className="absolute inset-0 flex items-center justify-center p-5 text-center font-display text-2xl font-extrabold text-white"
-                style={{ background: `linear-gradient(135deg, ${app.accent}, ${app.accent}bb)` }}
-              >
-                {app.name.split(":")[0]}
-              </div>
-            }
-          />
         </div>
       </div>
     </div>
