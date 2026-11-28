@@ -167,10 +167,12 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
         <span className="absolute top-4 right-4 rounded-full bg-ink/60 px-3 py-1 text-xs font-bold text-white backdrop-blur">
           {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
+        {/* white fade — the banner melts into the details below */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-paper via-paper/80 to-transparent" />
       </div>
 
-      {/* Bottom: details */}
-      <div className="flex flex-col gap-4 p-5 sm:p-7">
+      {/* Bottom: details (lifted up to sit on the fade) */}
+      <div className="relative z-10 -mt-10 flex flex-col gap-4 p-5 pt-0 sm:p-7 sm:pt-0">
         <div className="flex items-center gap-4">
           <SafeImage
             src={playImg(app.icon, "s160")}
