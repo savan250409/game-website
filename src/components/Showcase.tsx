@@ -138,8 +138,8 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
     <div className="flex w-full flex-col overflow-hidden rounded-[32px] border border-line bg-paper shadow-lift">
       {/* Top: banner */}
       <div
-        className="relative h-44 w-full shrink-0 overflow-hidden sm:h-56 lg:h-[320px]"
-        style={{ background: `${app.accent}14` }}
+        className="relative h-[200px] w-full shrink-0 overflow-hidden sm:h-[280px] lg:h-[360px]"
+        style={{ background: `linear-gradient(135deg, ${app.accent}33, ${app.accent}12)` }}
       >
         <SafeImage
           src={playImg(app.banner, "w1024-h500")}
@@ -147,8 +147,8 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
           fill
           priority={index === 0}
           quality={72}
-          sizes="(max-width: 768px) 100vw, 640px"
-          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 1000px"
+          className="object-contain"
           fallback={
             <div
               className="absolute inset-0 flex items-center justify-center p-5 text-center font-display text-2xl font-extrabold text-white"
@@ -158,13 +158,13 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
             </div>
           }
         />
-        <span
-          className="absolute top-4 left-4 rounded-full bg-paper/90 px-3 py-1 text-xs font-bold uppercase backdrop-blur"
-          style={{ color: app.accent }}
-        >
-          {app.genre}
-        </span>
-        <span className="absolute top-4 right-4 rounded-full bg-ink/80 px-3 py-1 text-xs font-bold text-white backdrop-blur">
+        {/* soft top scrim so the overlaid title stays readable */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/35 to-transparent" />
+        {/* game name on the banner — light weight, soft colour */}
+        <h3 className="absolute top-4 right-20 left-5 truncate font-display text-xl font-medium tracking-tight text-white/95 drop-shadow-md sm:text-2xl">
+          {app.name.split(":")[0]}
+        </h3>
+        <span className="absolute top-4 right-4 rounded-full bg-ink/60 px-3 py-1 text-xs font-bold text-white backdrop-blur">
           {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
       </div>
@@ -188,10 +188,8 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
             }
           />
           <div className="min-w-0 flex-1">
-            <h3 className="font-display text-2xl leading-tight font-extrabold tracking-tight sm:text-3xl">
-              {app.name.split(":")[0]}
-            </h3>
-            <p className="mt-1 flex flex-wrap items-center gap-x-2 text-xs font-bold text-muted">
+            <p className="font-display text-lg font-extrabold tracking-tight">{app.genre}</p>
+            <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-xs font-bold text-muted">
               {app.rating ? (
                 <span className="flex items-center gap-1">
                   <Star size={12} className="fill-sun text-sun" /> {app.rating.toFixed(1)}
