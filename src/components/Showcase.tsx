@@ -139,7 +139,7 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
       {/* Top: banner */}
       <div
         className="relative h-[200px] w-full shrink-0 overflow-hidden sm:h-[280px] lg:h-[360px]"
-        style={{ background: `linear-gradient(135deg, ${app.accent}33, ${app.accent}12)` }}
+        style={{ background: `${app.accent}14` }}
       >
         <SafeImage
           src={playImg(app.banner, "w1024-h500")}
@@ -147,8 +147,8 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
           fill
           priority={index === 0}
           quality={72}
-          sizes="(max-width: 768px) 100vw, 1000px"
-          className="object-contain"
+          sizes="(max-width: 768px) 100vw, 640px"
+          className="object-cover"
           fallback={
             <div
               className="absolute inset-0 flex items-center justify-center p-5 text-center font-display text-2xl font-extrabold text-white"
@@ -188,8 +188,10 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
             }
           />
           <div className="min-w-0 flex-1">
-            <p className="font-display text-lg font-extrabold tracking-tight">{app.genre}</p>
-            <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-xs font-bold text-muted">
+            <h3 className="font-display text-2xl leading-tight font-semibold tracking-tight text-ink-soft sm:text-3xl">
+              {app.name.split(":")[0]}
+            </h3>
+            <p className="mt-1 flex flex-wrap items-center gap-x-2 text-xs font-bold text-muted">
               {app.rating ? (
                 <span className="flex items-center gap-1">
                   <Star size={12} className="fill-sun text-sun" /> {app.rating.toFixed(1)}
