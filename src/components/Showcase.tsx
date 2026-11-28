@@ -208,18 +208,18 @@ function Card({ app, index, total }: { app: StoreApp; index: number; total: numb
           {app.tagline}
         </p>
 
-        <ul className="hidden grid-cols-2 gap-2.5 sm:grid">
+        <ul className="hidden flex-wrap gap-2 sm:flex">
           {app.highlights.slice(0, 4).map((h) => (
             <li
               key={h}
-              className="flex items-center gap-2 rounded-2xl px-3 py-2.5 text-xs leading-tight font-bold lg:text-sm"
+              className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold"
               style={{ background: `${app.accent}12`, border: `1px solid ${app.accent}33` }}
             >
               <span
-                className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-white"
+                className="grid h-5 w-5 shrink-0 place-items-center rounded-full text-white"
                 style={{ background: app.accent }}
               >
-                <Check size={14} strokeWidth={3} />
+                <Check size={12} strokeWidth={3} />
               </span>
               {h}
             </li>
