@@ -49,7 +49,7 @@ export default function Showcase({ apps }: { apps: StoreApp[] }) {
 
   return (
     <div
-      className="mx-auto mt-12 max-w-2xl px-5 sm:mt-16"
+      className="mx-auto mt-12 max-w-6xl px-5 sm:mt-16 sm:px-8"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
@@ -58,8 +58,8 @@ export default function Showcase({ apps }: { apps: StoreApp[] }) {
     >
       <div className="relative">
         {/* Slide viewport */}
-        <div className="relative min-h-[500px] overflow-hidden rounded-[32px] sm:min-h-[700px]">
-          <AnimatePresence initial={false} custom={dir} mode="popLayout">
+        <div className="grid overflow-hidden rounded-[32px]">
+          <AnimatePresence initial={false} custom={dir}>
             <motion.div
               key={app.id}
               custom={dir}
@@ -68,7 +68,7 @@ export default function Showcase({ apps }: { apps: StoreApp[] }) {
               animate="center"
               exit="exit"
               transition={{ duration: 0.55, ease: EASE }}
-              className="absolute inset-0 flex items-center justify-center"
+              className="[grid-area:1/1]"
             >
               <Card app={app} index={index} total={n} />
             </motion.div>
